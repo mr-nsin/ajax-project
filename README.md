@@ -1,2 +1,2 @@
-# ajax-project
-Learned about ajax request
+#Ajax Project 
+Learned about ajax request from udacity.
