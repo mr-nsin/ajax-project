@@ -35,6 +35,8 @@ function loadData() {
                             +'</li>'
             );
         };
+    }).error(function(e){
+        $nytHeaderElem.text("New Time Articles Could Not Be Loaded.");
     });
     return false;
 };
