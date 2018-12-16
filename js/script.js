@@ -20,6 +20,7 @@ function loadData() {
 
     //The function will be called when submit buttion is clicked then get json method will make an HTTP request, and when response comes
     //this annonymous function will be called upon, the response data will be passed into the function. Data is in json form.
+    //This request is for "New York Times API."
     $.getJSON("https://api.nytimes.com/svc/search/v2/articlesearch.json?q='" + $citystr + "'&api-key=24f484a347224d76aec8665ef6f2be92", function(data){
         console.log(data);
         $nytHeaderElem.text('New York Times Artcle About ' + $citystr);
@@ -37,6 +38,27 @@ function loadData() {
         };
     }).error(function(e){
         $nytHeaderElem.text("New Time Articles Could Not Be Loaded.");
+    });
+
+    //This request is for "Wikipedia Articles, using media wikipedia API."
+    var wikiURL = 'https://en.wikipedia.org/w/api.php?action=opensearch&search="'+ $citystr + '"&format=json&callback=wikiCallback';
+    //The function is for making cross origin request
+    $.ajax({
+        type: "method",
+        url: wikiURL,
+        dataType: "jsonp",
+        //jsonp callback, in this function upon successful response, response data
+        //is passed.
+        success: function (response) {
+            console.log(response);
+            articlesList = response[1];
+            articlesURL = response[3];
+            for(var i = 0; i < articlesList.length; i++){
+                articleURL = articlesURL[i];
+                articleStr = articlesList[i];  
+                $wikiElem.append('<li><a href="'+articleURL+'">'+articleStr+'</li>');
+            };
+        }
     });
     return false;
 };
