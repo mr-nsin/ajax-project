@@ -41,7 +41,16 @@ function loadData() {
     });
 
     //This request is for "Wikipedia Articles, using media wikipedia API."
-    var wikiURL = 'https://en.wikipedia.org/w/api.php?action=opensearch&search="'+ $citystr + '"&format=json&callback=wikiCallback';
+    var wikiURL = 'https://en.wikipediaASDFASDF.org/w/api.php?action=opensearch&search="'+ $citystr + '"&format=json&callback=wikiCallback';
+    
+    //There are many  different methods to handle jsonp request.
+    //Jsonp does not provide a error function for fallback therefor we will get around
+    //setTimeout function runs if it does not able to get resources it will append
+    //the following string into the wikipedia element.
+    var wikiTimeOutRequest = setTimeout(() => {
+        $wikiElem.text('Failed to get wikipedia resources');
+    }, 8000);
+
     //The function is for making cross origin request
     $.ajax({
         type: "method",
@@ -58,6 +67,12 @@ function loadData() {
                 articleStr = articlesList[i];  
                 $wikiElem.append('<li><a href="'+articleURL+'">'+articleStr+'</li>');
             };
+
+            //This clear timeout or stop this timeout from happening.
+            //Process occur this way
+            //  1. Success function will run and will pinned all the articles to the list.
+            //  2. If this run successfully then stop the timeout.
+            clearTimeout(wikiTimeOutRequest);
         }
     });
     return false;
